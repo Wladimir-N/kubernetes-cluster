@@ -7,6 +7,9 @@ apiServer:
   - "10.0.6.151"
   - "10.0.6.156"
   - "10.0.6.158"
+  - "master151"
+  - "master156"
+  - "master158"
 controlPlaneEndpoint: "10.0.6.3:6443"
 etcd:
     external:
