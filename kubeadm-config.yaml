@@ -1,0 +1,20 @@
+apiVersion: kubeadm.k8s.io/v1beta3
+kind: ClusterConfiguration
+kubernetesVersion: stable
+apiServer:
+  certSANs:
+  - "10.0.6.3"
+  - "10.0.6.151"
+  - "10.0.6.156"
+  - "10.0.6.158"
+controlPlaneEndpoint: "10.0.6.3:6443"
+etcd:
+    external:
+        endpoints:
+        - http://10.0.6.152:2379
+        - http://10.0.6.154:2379
+        - http://10.0.6.155:2379
+networking:
+  serviceSubnet: "10.16.0.0/12"
+  podSubnet: "10.32.0.0/12"
+kubernetesVersion: "v1.23.1"
