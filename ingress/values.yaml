@@ -1,0 +1,25 @@
+controller:
+  config:
+    compute-full-forwarded-for: "true"
+    enable-real-ip: "true"
+    forwarded-for-header: CF-Connecting-IP
+  kind: DaemonSet
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: node-role.kubernetes.io/ingress
+              operator: Exists
+  tolerations:
+    - key: node-role.kubernetes.io/ingress
+      operator: Exists
+  hostPort:
+    enabled: false
+  service:
+    externalIPs:
+      - 10.0.27.95
+    externalTrafficPolicy: Local
+
+defaultBackend:
+  enabled: true
