@@ -1,11 +1,17 @@
 За основу берём Debian 11, обновляем до бекпортов, выделяем 1 ядро, 1Гб ОЗУ и 15Гб места
 # apt install --no-install-recommends etcd-server
+
+Настраиваем на каждой ноде
 # nano /etc/default/etcd
 
-ETCD_NAME="etcd152"
-ETCD_LISTEN_PEER_URLS="http://10.0.6.152:2380"
-ETCD_LISTEN_CLIENT_URLS="http://127.0.0.1:2379,http://10.0.6.152:2379"
-ETCD_INITIAL_ADVERTISE_PEER_URLS="http://10.0.6.152:2380"
-ETCD_INITIAL_CLUSTER="etcd152=http://10.0.6.152:2380,etcd154=http://10.0.6.154:2380,etcd155=http://10.0.6.155:2380"
-ETCD_INITIAL_CLUSTER_TOKEN="etcd152-cluster"
-ETCD_ADVERTISE_CLIENT_URLS="http://10.0.6.152:2379"
+ETCD_NAME="etcd112"
+ETCD_LISTEN_PEER_URLS="http://10.0.48.112:2380"
+ETCD_LISTEN_CLIENT_URLS="http://127.0.0.1:2379,http://10.0.48.112:2379"
+ETCD_INITIAL_ADVERTISE_PEER_URLS="http://10.0.48.112:2380"
+ETCD_INITIAL_CLUSTER="etcd112=http://10.0.48.112:2380,etcd113=http://10.0.48.113:2380,etcd114=http://10.0.48.114:2380"
+ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster112"
+ETCD_ADVERTISE_CLIENT_URLS="http://10.0.48.112:2379"
+
+после настройки на нодах
+# rm -rf /var/lib/etcd/default
+# systemctl restart etcd
