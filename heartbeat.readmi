@@ -1,0 +1,37 @@
+Debian 11 backport lxc
+# apt install --no-install-recommends heartbeat
+
+Все файлы одинаковые на всех серверах с heartbeat
+# ( echo -ne "auth 1\n1 md5 ";   dd if=/dev/urandom bs=512 count=1 | openssl md5 | awk '{print $2}') > /etc/ha.d/authkeys
+# nano /etc/ha.d/ha.cf
+
+keepalive 2
+deadtime 10
+udpport        694
+bcast eth0
+# Указываем ip противоположного сервера
+ucast eth0 10.0.48.114
+logfacility     local0
+node    etcd113
+node    etcd114
+
+# nano /etc/ha.d/haresources
+
+etcd113 IPaddr2::10.0.48.1/24/eth0
+
+# mkdir /usr/lib/systemd/system/heartbeat.service.d
+# nano /usr/lib/systemd/system/heartbeat.service.d/fix.conf
+
+[Service]
+ExecStartPre=/usr/local/bin/heartbeat-fix
+
+# nano /usr/local/bin/heartbeat-fix
+
+#!/bin/bash
+if [ ! -d /run/heartbeat ]; then
+ mkdir -p /run/heartbeat
+fi
+
+# chmod +x /usr/local/bin/heartbeat-fix
+# systemctl daemon-reload
+# systemctl restart heartbeat
