@@ -10,14 +10,13 @@
 # systemctl enable crio
 # systemctl enable crio-wipe
 # mkdir /var/lib/crio/
-# systemctl start crio
-# systemctl start crio-wipe
 # nano /etc/modules-load.d/k8s.conf
 
 br_netfilter
 
 # modprobe br_netfilter
-
+# systemctl start crio
+# systemctl start crio-wipe
 # echo 1 > /proc/sys/net/ipv4/ip_forward
 # echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
 
