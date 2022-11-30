@@ -2,11 +2,9 @@
 
 
 Подготовка ноды
-# export OS=Debian_Testing
-# export VERSION=Debian_11
-# export OS=Debian_11
-# echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/ /" >> /etc/apt/sources.list
-# echo "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/$VERSION/$OS/ /" >> /etc/apt/sources.list
+# echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_11/ /" >> /etc/apt/sources.list
+# echo "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/Debian_11/Debian_11/ /" >> /etc/apt/sources.list
+# apt install --no-install-recommends gnupg
 # apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4D64390375060AA4
 # apt update
 # apt install --no-install-recommends cri-o cri-o-runc
