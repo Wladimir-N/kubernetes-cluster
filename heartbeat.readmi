@@ -3,12 +3,12 @@ Debian 11 backport lxc
 
 Все файлы одинаковые на всех серверах с heartbeat
 # ( echo -ne "auth 1\n1 md5 ";   dd if=/dev/urandom bs=512 count=1 | openssl md5 | awk '{print $2}') > /etc/ha.d/authkeys
+# chmod 0600  /etc/ha.d/authkeys
 # nano /etc/ha.d/ha.cf
 
 keepalive 2
 deadtime 10
 udpport        694
-bcast eth0
 # Указываем ip противоположного сервера
 ucast eth0 10.0.48.114
 logfacility     local0
