@@ -1,24 +1,38 @@
-За основу берём Debian 11, обновляем до бекпортов, выделяем 1 ядро, 1Гб ОЗУ и 15Гб места
+За основу берём Debian 12, обновляем до бекпортов, выделяем 2 ядро, 2Гб ОЗУ и 15Гб места
 
 
 Подготовка ноды
-# echo -e "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_11/ /\ndeb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/1.25/Debian_11/ /" >> /etc/apt/sources.list
-# apt install --no-install-recommends gnupg wget
-# wget -qO - https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_11/Release.key | apt-key add -
-# apt update
-# apt install --no-install-recommends cri-o cri-o-runc
-# systemctl enable crio
-# systemctl enable crio-wipe
-# mkdir /var/lib/crio/
+# apt install --no-install-recommends containerd
+# nano /etc/containerd/config.toml
+
+version = 2
+
+[plugins]
+  [plugins."io.containerd.grpc.v1.cri"]
+    [plugins."io.containerd.grpc.v1.cri".cni]
+      bin_dir = "/opt/cni/bin"
+      conf_dir = "/etc/cni/net.d"
+  [plugins."io.containerd.internal.v1.opt"]
+    path = "/var/lib/containerd/opt"
+  [plugins."io.containerd.grpc.v1.cri".containerd]
+    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes]
+      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+        runtime_type = "io.containerd.runc.v2"
+        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+           SystemdCgroup = true
+
 # nano /etc/modules-load.d/k8s.conf
 
 br_netfilter
 
 # modprobe br_netfilter
-# systemctl start crio
-# systemctl start crio-wipe
-# echo 1 > /proc/sys/net/ipv4/ip_forward
-# echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
+# nano /etc/sysctl.d/k8s.conf
+
+net.bridge.bridge-nf-call-iptables  = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.ipv4.ip_forward                 = 1
+
+# sysctl --system
 
 
 Инициализация мастера
