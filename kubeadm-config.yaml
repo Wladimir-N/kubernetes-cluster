@@ -20,4 +20,4 @@ networking:
 controllerManager:
   extraArgs:
     "node-cidr-mask-size": "22"
-kubernetesVersion: "v1.25.4"
+kubernetesVersion: "v1.27.3"
