@@ -2,7 +2,7 @@ Debian 11 backports LXC
 # apt install --no-install-recommends haproxy
 # mv /etc/haproxy/haproxy.cfg{,.back}
 # nano /etc/haproxy/haproxy.cfg
-root@node100:~# cat /etc/haproxy/haproxy.cfg
+
 global
     user haproxy
     group haproxy
