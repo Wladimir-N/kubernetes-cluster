@@ -26,8 +26,8 @@ backend kubernetes-master-nodes
     http-check send meth GET uri /healthz
     http-check expect status 200
     default-server inter 3001ms downinter 1s rise 2 fall 1
-    server master136 10.0.48.115:6443 check check-ssl verify none fall 1 rise 2
-    server master137 10.0.48.116:6443 check check-ssl verify none fall 1 rise 2
+    server master115 10.0.48.115:6443 check check-ssl verify none fall 1 rise 2
+    server master116 10.0.48.116:6443 check check-ssl verify none fall 1 rise 2
 
 
 # echo net.ipv4.ip_nonlocal_bind=1 >> /etc/sysctl.conf
