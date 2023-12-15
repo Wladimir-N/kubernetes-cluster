@@ -22,8 +22,15 @@ etcd113 IPaddr2::10.0.48.1/24/eth0
 # mkdir /usr/lib/systemd/system/heartbeat.service.d
 # nano /usr/lib/systemd/system/heartbeat.service.d/fix.conf
 
+[Unit]
+After=network.target haproxy.service
+Wants=haproxy.service
+Requires=haproxy.service
 [Service]
 ExecStartPre=/usr/local/bin/heartbeat-fix
+Restart=always
+RestartSec=10000ms
+StartLimitInterval=0
 
 # nano /usr/local/bin/heartbeat-fix
 
