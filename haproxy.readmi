@@ -1,4 +1,4 @@
-Debian 11 backports LXC
+# Настройки для локлаьного Haproxy
 # apt install --no-install-recommends haproxy
 # mv /etc/haproxy/haproxy.cfg{,.back}
 # nano /etc/haproxy/haproxy.cfg
@@ -29,7 +29,48 @@ backend kubernetes-master-nodes
     server master115 10.0.48.115:6443 check check-ssl verify none fall 1 rise 2
     server master116 10.0.48.116:6443 check check-ssl verify none fall 1 rise 2
 
+# systemctl restart haproxy
+
+# Настройки для глобального haproxy
+# mkdir /etc/systemd/system/haproxy.service.d
+# nano /etc/systemd/system/haproxy.service.d/After.conf
+
+[Unit]
+After=network.target rsyslog.service
+Wants=network.target
+[Service]
+ExecStartPost=/bin/bash -c '/bin/systemctl start heartbeat.service'&
+
+# mv /etc/haproxy/haproxy.cfg{,.back}
+# nano /etc/haproxy/haproxy.cfg
+
+global
+    user haproxy
+    group haproxy
+defaults
+    mode http
+    log global
+    retries 2
+    timeout connect 300000ms
+    timeout server 300000ms
+    timeout client 300000ms
+frontend kubernetes
+    bind 10.0.48.1:6443
+    option tcplog
+    mode tcp
+    default_backend kubernetes-master-nodes
+backend kubernetes-master-nodes
+    mode tcp
+    balance source
+    option httpchk
+    http-check connect ssl alpn h2
+    http-check send meth GET uri /healthz
+    http-check expect status 200
+    default-server inter 3001ms downinter 1s rise 2 fall 1
+    server master115 10.0.48.115:6443 check check-ssl verify none fall 1 rise 2
+    server master116 10.0.48.116:6443 check check-ssl verify none fall 1 rise 2
 
 # echo net.ipv4.ip_nonlocal_bind=1 >> /etc/sysctl.conf
 # sysctl -p
+# systemctl daemon-reload
 # systemctl restart haproxy
